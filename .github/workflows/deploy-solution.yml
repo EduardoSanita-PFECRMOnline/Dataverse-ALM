@@ -18,7 +18,7 @@ jobs:
     steps:
      - uses: dawidd6/action-download-artifact@v2
         with:
-          workflow: "Pack solucao Contoso University Core"
+          workflow: pack-solution.yml
           name: packed-solution
 
       - uses: microsoft/powerplatform-actions/import-solution@v0
