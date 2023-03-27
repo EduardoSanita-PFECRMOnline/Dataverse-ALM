@@ -1,0 +1,29 @@
+name: Deploy Pack Contoso University Core
+
+on:
+  workflow_run:
+    workflows: ["Pack solucao Contoso University Core"]
+    branches: [main]
+    types:
+      - completed
+
+    workflow_dispatch:
+
+jobs:
+  Deploy:
+    runs-on: windows-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    environment: Production
+
+    steps:
+     - uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: pack-solution.yml
+          name: packed-solution
+
+      - uses: microsoft/powerplatform-actions/import-solution@v0
+        with:
+          environment-url: https://edsanitaprd.crm2.dynamics.com
+          user-name: ${{ secrets.USERNAME }}
+          password-secret: ${{ secrets.PASSWORD }}
+          solution-file: contoso_university_core_managed.zip
